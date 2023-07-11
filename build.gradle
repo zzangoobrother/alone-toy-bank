@@ -98,8 +98,6 @@ sonarqube {
 
         // 토큰을 직접 등록 해도 되지만 주입 받아서 사용한다.
         // property "sonar.login", "{token}"
-        property 'sonar.projectKey', 'goodchoice'
-        property 'sonar.login', 'sqp_cadf2a43e16f1534bfa2b6a260982d62a6fe95fa'
         property "sonar.sources", "src"
         property "sonar.language", "java"
         property "sonar.sourceEncoding", "UTF-8"
