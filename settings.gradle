@@ -1,1 +1,3 @@
 rootProject.name = 'alone-toy-bank'
+
+include 'bank-member'
