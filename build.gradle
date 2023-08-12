@@ -1,109 +1,45 @@
 plugins {
     id 'java'
-    id 'jacoco'
-    id 'org.sonarqube' version '3.5.0.2730'
     id 'org.springframework.boot' version '2.7.8'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+// 모든 프로젝트에 적용.
+allprojects {
+    group = 'com.example'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        url "https://plugins.gradle.org/m2/"
-    }
-}
+// 서브 프로젝트 전체에 적용.
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
-    finalizedBy 'jacocoTestReport'
-}
-
-jacocoTestReport {
-    // 분석 리포트 출력 포맷 설정
-    reports{
-        html.enabled=true
-        xml.enabled=true
-        csv.enabled=true
-    }
-
-    finalizedBy 'jacocoTestCoverageVerification'
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            enabled = true
-            element = 'CLASS'
-
-            // 적용 할 패키지(기본은 전체)
-            // includes = []
-
-            // 브랜치 커버리지
-            limit {
-                counter = 'BRANCH'
-                value = 'COVEREDRATIO'
-                minimum = 0.50
-            }
-
-            // 라인 커버리지
-            limit {
-                counter = 'LINE'
-                value = 'COVEREDRATIO'
-                minimum = 0.50
-            }
-
-            // 빈 줄을 제외한 코드의 최대 라인수
-            limit {
-                counter = 'LINE'
-                value = 'TOTALCOUNT'
-                maximum = 200
-            }
-
-            // 커버리지 체크를 제외할 클래스들
-            excludes = []
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
         }
     }
 
-    finalizedBy 'sonarqube'
-}
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
 
-//apply plugin: 'org.sonarqube'
+        annotationProcessor 'org.projectlombok:lombok'
 
-sonarqube {
-    properties {
-        property "sonar.host.url", "http://49.50.162.9:9000"
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
 
-        // 토큰을 직접 등록 해도 되지만 주입 받아서 사용한다.
-        // property "sonar.login", "{token}"
-        property "sonar.sources", "src"
-        property "sonar.language", "java"
-        property "sonar.sourceEncoding", "UTF-8"
-        property 'sonar.java.binaries', 'build/classes'
-        property "sonar.test.inclusions", "**/*Test.java"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
-        property 'sonar.exclusions', '**/test/**, **/Q*.java, **/*Doc*.java, **/resources/**'
+    tasks.named('test') {
+        useJUnitPlatform()
     }
 }
