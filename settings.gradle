@@ -1,5 +1,6 @@
 rootProject.name = 'alone-toy-bank'
 
+include 'bank-api'
 include 'bank-member'
 include 'bank-h2'
 include 'bank-mysql'
