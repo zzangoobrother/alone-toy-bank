@@ -1,6 +1,6 @@
 package com.example.bankmember.infrastructure.repositories;
 
-import com.example.bankmember.applications.MemberCommandRepository;
+import com.example.bankmember.applications.port.MemberCommandRepository;
 import com.example.bankmember.domain.Member;
 import com.example.bankmember.infrastructure.entities.MemberEntity;
 import org.springframework.stereotype.Repository;

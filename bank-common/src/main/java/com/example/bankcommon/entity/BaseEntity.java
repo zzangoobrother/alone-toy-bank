@@ -1,4 +1,4 @@
-package com.example.bankcommon.global.entity;
+package com.example.bankcommon.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
