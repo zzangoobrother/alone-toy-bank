@@ -2,8 +2,8 @@ package com.example.bankapi.member.applications;
 
 import com.example.bankapi.member.applications.dto.request.CreateMemberServiceRequest;
 import com.example.bankapi.member.applications.dto.response.CreateMemberServiceResponse;
-import com.example.bankcommon.global.entity.Name;
-import com.example.bankmember.applications.MemberCommandRepository;
+import com.example.bankcommon.entity.Name;
+import com.example.bankmember.applications.port.MemberCommandRepository;
 import com.example.bankmember.domain.Member;
 import com.example.bankmember.domain.MemberState;
 import org.springframework.stereotype.Service;

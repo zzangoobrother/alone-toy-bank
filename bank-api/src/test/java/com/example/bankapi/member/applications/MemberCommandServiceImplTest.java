@@ -3,7 +3,7 @@ package com.example.bankapi.member.applications;
 import com.example.bankapi.member.applications.dto.request.CreateMemberServiceRequest;
 import com.example.bankapi.member.applications.dto.response.CreateMemberServiceResponse;
 import com.example.bankmember.applications.FakeMemberCommandRepository;
-import com.example.bankmember.applications.MemberCommandRepository;
+import com.example.bankmember.applications.port.MemberCommandRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
