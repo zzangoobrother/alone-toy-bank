@@ -6,7 +6,7 @@ import com.example.bankmember.infrastructure.entities.MemberEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MemberCommandRepositoryImpl implements MemberCommandRepository {
+class MemberCommandRepositoryImpl implements MemberCommandRepository {
 
     private final JpaMemberRepository jpaMemberRepository;
 
@@ -16,7 +16,7 @@ public class MemberCommandRepositoryImpl implements MemberCommandRepository {
 
     @Override
     public Member save(Member member) {
-        MemberEntity memberEntity = MemberEntity.fromEntity(member);
+        MemberEntity memberEntity = MemberEntity.toEntity(member);
         return jpaMemberRepository.save(memberEntity).toModel();
     }
 }

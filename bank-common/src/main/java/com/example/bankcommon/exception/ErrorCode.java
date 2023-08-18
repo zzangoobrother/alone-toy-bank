@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 
-    INVALID_INPUT_VALUE(400, "C001", "필수 입력값 입니다."),
+    INVALID_INPUT_VALUE(400, "C001", "유효한 입력값이 아닙니다."),
     METHOD_NOT_ALLOWED(405, "C002", "해당 경로를 찾을 수 없습니다."),
     ENTITY_NOT_FOUND(400, "C003", "해당 정보를 찾을 수 없습니다.");
 
