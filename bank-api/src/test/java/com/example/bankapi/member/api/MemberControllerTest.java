@@ -1,7 +1,11 @@
 package com.example.bankapi.member.api;
 
+import com.example.bankapi.global.auth.JwtProvider;
+import com.example.bankapi.member.api.dto.request.LoginRequest;
 import com.example.bankapi.member.api.dto.request.SignupRequest;
 import com.example.bankapi.member.applications.MemberCommandService;
+import com.example.bankapi.member.applications.MemberQueryService;
+import com.example.bankapi.member.applications.dto.response.LoginServiceResponse;
 import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +33,12 @@ class MemberControllerTest {
 
     @MockBean
     private MemberCommandService memberCommandService;
+
+    @MockBean
+    private MemberQueryService memberQueryService;
+
+    @MockBean
+    private JwtProvider jwtProvider;
 
     private static final String NAME = "홍길동";
 
@@ -70,6 +80,51 @@ class MemberControllerTest {
 
         mockMvc.perform(
                         post("/api/signup")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("로그인 성공")
+    @Test
+    void login() throws Exception {
+        // given
+        LoginRequest request = new LoginRequest(NAME);
+
+        when(memberQueryService.login(any())).thenReturn(LoginServiceResponse.builder().build());
+
+        mockMvc.perform(
+                        post("/api/login")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("회원명이 null 이면 에러")
+    @Test
+    void nullNameLogin() throws Exception {
+        LoginRequest request = new LoginRequest(null);
+
+        mockMvc.perform(
+                        post("/api/login")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("회원명이 빈값이면 에러")
+    @Test
+    void notInputNameLogin() throws Exception {
+        LoginRequest request = new LoginRequest("");
+
+        mockMvc.perform(
+                        post("/api/login")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )

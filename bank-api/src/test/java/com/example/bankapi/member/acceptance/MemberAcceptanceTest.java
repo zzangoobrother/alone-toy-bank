@@ -21,4 +21,16 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
+
+    @DisplayName("로그인 한다.")
+    @Test
+    void login() {
+        // when
+        MemberSteps.회원_가입_요청(NAME);
+
+        ExtractableResponse<Response> response = MemberSteps.로그인_요청(NAME);
+
+        //then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
 }

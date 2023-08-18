@@ -2,7 +2,7 @@ package com.example.bankapi.member.applications;
 
 import com.example.bankapi.member.applications.dto.request.SignupServiceRequest;
 import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
-import com.example.bankmember.applications.FakeMemberCommandRepository;
+import com.example.bankmember.applications.FakeMemberRepository;
 import com.example.bankmember.applications.port.MemberCommandRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ class MemberCommandServiceImplTest {
 
     @BeforeEach
     void init() {
-        memberCommandRepository = new FakeMemberCommandRepository();
+        memberCommandRepository = new FakeMemberRepository();
         memberCommandService = new MemberCommandService(memberCommandRepository);
     }
 
