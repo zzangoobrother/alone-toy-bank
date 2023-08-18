@@ -1,4 +1,4 @@
-package com.example.bankmember.applications;
+package com.example.bankmember.applications.port;
 
 import com.example.bankmember.domain.Member;
 

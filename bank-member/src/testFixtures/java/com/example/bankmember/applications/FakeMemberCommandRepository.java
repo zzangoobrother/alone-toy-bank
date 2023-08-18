@@ -1,6 +1,7 @@
 package com.example.bankmember.applications;
 
-import com.example.bankcommon.global.entity.Name;
+import com.example.bankcommon.entity.Name;
+import com.example.bankmember.applications.port.MemberCommandRepository;
 import com.example.bankmember.domain.Member;
 
 import java.util.ArrayList;
