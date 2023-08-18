@@ -44,7 +44,7 @@ public class MemberEntity extends BaseEntity {
                 .build();
     }
 
-    public static MemberEntity fromEntity(Member member) {
+    public static MemberEntity toEntity(Member member) {
         MemberEntity memberEntity = MemberEntity.builder()
                 .name(member.getName())
                 .state(member.getState())

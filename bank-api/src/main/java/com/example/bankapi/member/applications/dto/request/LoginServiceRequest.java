@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CreateMemberServiceRequest {
+public class LoginServiceRequest {
     private String name;
 
-    public CreateMemberServiceRequest(String name) {
+    public LoginServiceRequest(String name) {
         this.name = name;
     }
 }

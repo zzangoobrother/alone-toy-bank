@@ -1,8 +1,8 @@
 package com.example.bankapi.member.applications;
 
-import com.example.bankapi.member.applications.dto.request.CreateMemberServiceRequest;
-import com.example.bankapi.member.applications.dto.response.CreateMemberServiceResponse;
-import com.example.bankmember.applications.FakeMemberCommandRepository;
+import com.example.bankapi.member.applications.dto.request.SignupServiceRequest;
+import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
+import com.example.bankmember.applications.FakeMemberRepository;
 import com.example.bankmember.applications.port.MemberCommandRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,16 +18,16 @@ class MemberCommandServiceImplTest {
 
     @BeforeEach
     void init() {
-        memberCommandRepository = new FakeMemberCommandRepository();
+        memberCommandRepository = new FakeMemberRepository();
         memberCommandService = new MemberCommandService(memberCommandRepository);
     }
 
     @DisplayName("회원 가입 성공")
     @Test
-    void create() {
-        CreateMemberServiceRequest request = new CreateMemberServiceRequest("홍길동");
+    void signup() {
+        SignupServiceRequest request = new SignupServiceRequest("홍길동");
 
-        CreateMemberServiceResponse result = memberCommandService.create(request);
+        SignupServiceResponse result = memberCommandService.signup(request);
 
         assertThat(result.getName()).isEqualTo(request.getName());
     }
@@ -35,18 +35,18 @@ class MemberCommandServiceImplTest {
     @DisplayName("회원명 null 입력하면 에러")
     @Test
     void nullNameInput() {
-        CreateMemberServiceRequest request = new CreateMemberServiceRequest(null);
+        SignupServiceRequest request = new SignupServiceRequest(null);
 
-        assertThatThrownBy(() -> memberCommandService.create(request))
+        assertThatThrownBy(() -> memberCommandService.signup(request))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("회원명 빈값 입력하면 에러")
     @Test
     void emptyNameInput() {
-        CreateMemberServiceRequest request = new CreateMemberServiceRequest("");
+        SignupServiceRequest request = new SignupServiceRequest("");
 
-        assertThatThrownBy(() -> memberCommandService.create(request))
+        assertThatThrownBy(() -> memberCommandService.signup(request))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

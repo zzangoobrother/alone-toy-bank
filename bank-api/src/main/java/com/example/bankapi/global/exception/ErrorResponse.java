@@ -19,7 +19,7 @@ public class ErrorResponse {
     private List<FieldError> errors;
     private String code;
 
-    public ErrorResponse(String message, int status, List<FieldError> errors, String code) {
+    private ErrorResponse(String message, int status, List<FieldError> errors, String code) {
         this.message = message;
         this.status = status;
         this.errors = errors;
