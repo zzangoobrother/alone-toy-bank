@@ -16,7 +16,7 @@ public class MemberSteps extends AcceptanceTestSteps {
         return given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
-                .when().post("/api/members")
+                .when().post("/api/signup")
                 .then().log().all().extract();
     }
 }

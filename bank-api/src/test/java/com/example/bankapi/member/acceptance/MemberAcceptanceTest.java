@@ -14,7 +14,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("회원 가입을 한다.")
     @Test
-    void create() {
+    void signup() {
         // when
         ExtractableResponse<Response> response = MemberSteps.회원_가입_요청(NAME);
 

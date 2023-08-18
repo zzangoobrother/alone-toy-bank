@@ -1,8 +1,8 @@
 package com.example.bankapi.member.api;
 
-import com.example.bankapi.member.api.dto.request.CreateMemberRequest;
+import com.example.bankapi.member.api.dto.request.SignupRequest;
 import com.example.bankapi.member.applications.MemberCommandService;
-import com.example.bankapi.member.applications.dto.response.CreateMemberServiceResponse;
+import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,14 +34,14 @@ class MemberControllerTest {
 
     @DisplayName("회원가입 성공")
     @Test
-    void create() throws Exception {
+    void signup() throws Exception {
         // given
-        CreateMemberRequest request = new CreateMemberRequest(NAME);
+        SignupRequest request = new SignupRequest(NAME);
 
-        when(memberCommandService.create(any())).thenReturn(CreateMemberServiceResponse.builder().build());
+        when(memberCommandService.signup(any())).thenReturn(SignupServiceResponse.builder().build());
 
         mockMvc.perform(
-                post("/api/members")
+                post("/api/signup")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
         )
@@ -52,10 +52,10 @@ class MemberControllerTest {
     @DisplayName("회원명이 null 이면 에러")
     @Test
     void nullName() throws Exception {
-        CreateMemberRequest request = new CreateMemberRequest(null);
+        SignupRequest request = new SignupRequest(null);
 
         mockMvc.perform(
-                        post("/api/members")
+                        post("/api/signup")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -66,10 +66,10 @@ class MemberControllerTest {
     @DisplayName("회원명이 빈값이면 에러")
     @Test
     void notInputName() throws Exception {
-        CreateMemberRequest request = new CreateMemberRequest("");
+        SignupRequest request = new SignupRequest("");
 
         mockMvc.perform(
-                        post("/api/members")
+                        post("/api/signup")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )

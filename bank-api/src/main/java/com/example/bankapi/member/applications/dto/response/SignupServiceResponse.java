@@ -5,12 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class CreateMemberServiceResponse {
+public class SignupServiceResponse {
     private String name;
     private MemberState state;
 
     @Builder
-    public CreateMemberServiceResponse(String name, MemberState state) {
+    public SignupServiceResponse(String name, MemberState state) {
         this.name = name;
         this.state = state;
     }
