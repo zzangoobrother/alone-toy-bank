@@ -1,7 +1,7 @@
 package com.example.bankmember.infrastructure.repositories;
 
 import com.example.bankcommon.entity.Name;
-import com.example.bankcommon.exception.BusinessException;
+import com.example.bankcommon.exception.EntityNotFoundException;
 import com.example.bankcommon.exception.ErrorCode;
 import com.example.bankmember.applications.port.MemberQueryRepository;
 import com.example.bankmember.domain.Member;
@@ -19,11 +19,11 @@ public class MemberQueryRepositoryImpl implements MemberQueryRepository {
 
     @Override
     public Member getMember(String name) {
-        return memberRepository.findByName(Name.newInstance(name)).orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND)).toModel();
+        return memberRepository.findByName(Name.newInstance(name)).orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND)).toModel();
     }
 
     @Override
     public Member getMember(String name, MemberState memberState) {
-        return memberRepository.findByNameAndState(Name.newInstance(name), MemberState.ACTIVITY).orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND)).toModel();
+        return memberRepository.findByNameAndState(Name.newInstance(name), MemberState.ACTIVITY).orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND)).toModel();
     }
 }

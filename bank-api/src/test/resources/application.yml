@@ -2,3 +2,7 @@ spring:
   config:
     activate:
       on-profile: test
+
+token:
+  secret: 8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds
+  expiration-time: 3600000

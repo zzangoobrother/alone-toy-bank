@@ -16,7 +16,7 @@ public class MemberSteps extends AcceptanceTestSteps {
         return given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
-                .when().post("/api/signup")
+                .when().post("/api/v1/signup")
                 .then().log().all().extract();
     }
 
@@ -32,7 +32,14 @@ public class MemberSteps extends AcceptanceTestSteps {
         return given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
-                .when().post("/api/login")
+                .when().post("/api/v1/login")
+                .then().log().all().extract();
+    }
+
+    public static ExtractableResponse<Response> 로그인_회원_조회(String token) {
+        return given(token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/v1/members")
                 .then().log().all().extract();
     }
 }
