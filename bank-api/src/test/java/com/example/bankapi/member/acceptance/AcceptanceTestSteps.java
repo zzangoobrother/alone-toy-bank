@@ -9,4 +9,10 @@ public class AcceptanceTestSteps {
         return RestAssured
                 .given().log().all();
     }
+
+    static RequestSpecification given(String token) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(token);
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.bankapi.global.auth;
+package com.example.bankapi.global.auth.jwt;
 
 import io.jsonwebtoken.Claims;
 

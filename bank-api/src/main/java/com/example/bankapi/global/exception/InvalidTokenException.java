@@ -1,11 +1,13 @@
 package com.example.bankapi.global.exception;
 
-import com.example.bankcommon.exception.BusinessException;
-import com.example.bankcommon.exception.ErrorCode;
+import lombok.Getter;
 
-public class InvalidTokenException extends BusinessException {
+@Getter
+public class InvalidTokenException extends RuntimeException {
 
-    public InvalidTokenException(String message) {
-        super(ErrorCode.INVALID_INPUT_VALUE, message);
+    private final ApiErrorCode apiErrorCode;
+
+    public InvalidTokenException(ApiErrorCode apiErrorCode) {
+        this.apiErrorCode = apiErrorCode;
     }
 }

@@ -33,4 +33,18 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
+
+    @DisplayName("로그인 회원 정보를 조회한다.")
+    @Test
+    void getLoginMember() {
+        // when
+        MemberSteps.회원_가입_요청(NAME);
+
+        String token = MemberSteps.로그인_되어_있음(NAME);
+
+        ExtractableResponse<Response> response = MemberSteps.로그인_회원_조회(token);
+
+        //then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
 }

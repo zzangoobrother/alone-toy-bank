@@ -1,5 +1,6 @@
-package com.example.bankapi.global.auth;
+package com.example.bankapi.global.auth.jwt;
 
+import com.example.bankapi.global.exception.ApiErrorCode;
 import com.example.bankapi.global.exception.InvalidTokenException;
 import com.example.bankapi.global.properties.JwtProperties;
 import io.jsonwebtoken.*;
@@ -56,7 +57,7 @@ public class JwtProviderImpl implements JwtProvider {
             log.error("JWT token compact of handler are invalid.");
         } catch (Exception e) {
             log.error("올바른 토큰을 입력해주세요.");
-            throw new InvalidTokenException("유효한 토큰이 아닙니다.");
+            throw new InvalidTokenException(ApiErrorCode.EFFECTIVE_TOKEN_VALUE);
         }
 
         return null;

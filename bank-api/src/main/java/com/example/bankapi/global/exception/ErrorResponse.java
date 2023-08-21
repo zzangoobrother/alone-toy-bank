@@ -30,6 +30,10 @@ public class ErrorResponse {
         return new ErrorResponse(error.getMessage(), error.getStatus(), new ArrayList<>(), error.getCode());
     }
 
+    public static ErrorResponse of(String message, int status, String code) {
+        return new ErrorResponse(message, status, new ArrayList<>(), code);
+    }
+
     public static ErrorResponse of(ErrorCode error, List<FieldError> fieldErrors) {
         return new ErrorResponse(error.getMessage(), error.getStatus(), fieldErrors, error.getCode());
     }
