@@ -43,4 +43,11 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = e.getErrorCode();
         return ResponseEntity.status(HttpStatus.valueOf(errorCode.getStatus())).body(ErrorResponse.of(errorCode));
     }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    protected ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException e) {
+        log.error("handleBusinessException", e);
+        ApiErrorCode errorCode = e.getApiErrorCode();
+        return ResponseEntity.status(HttpStatus.valueOf(errorCode.getStatus())).body(ErrorResponse.of(errorCode.getMessage(), errorCode.getStatus(), errorCode.getCode()));
+    }
 }

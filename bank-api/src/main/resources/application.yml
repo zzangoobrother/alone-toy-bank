@@ -16,3 +16,7 @@ spring:
   h2:
     console:
       enabled: true
+
+token:
+  secret: 8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds
+  expiration-time: 3600000

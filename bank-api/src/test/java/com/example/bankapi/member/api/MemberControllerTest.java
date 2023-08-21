@@ -1,12 +1,16 @@
 package com.example.bankapi.member.api;
 
-import com.example.bankapi.global.auth.JwtProvider;
+import com.example.bankapi.global.auth.MemberDetails;
+import com.example.bankapi.global.auth.jwt.JwtProvider;
+import com.example.bankapi.global.handler.AuthMemberArgument;
+import com.example.bankapi.global.model.MemberPrincipal;
 import com.example.bankapi.member.api.dto.request.LoginRequest;
 import com.example.bankapi.member.api.dto.request.SignupRequest;
 import com.example.bankapi.member.applications.MemberCommandService;
 import com.example.bankapi.member.applications.MemberQueryService;
 import com.example.bankapi.member.applications.dto.response.LoginServiceResponse;
 import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
+import com.example.bankmember.domain.MemberState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +22,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = MemberController.class)
@@ -40,6 +46,9 @@ class MemberControllerTest {
     @MockBean
     private JwtProvider jwtProvider;
 
+    @MockBean
+    private AuthMemberArgument authMemberArgument;
+
     private static final String NAME = "홍길동";
 
     @DisplayName("회원가입 성공")
@@ -51,7 +60,7 @@ class MemberControllerTest {
         when(memberCommandService.signup(any())).thenReturn(SignupServiceResponse.builder().build());
 
         mockMvc.perform(
-                post("/api/signup")
+                post("/api/v1/signup")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
         )
@@ -65,7 +74,7 @@ class MemberControllerTest {
         SignupRequest request = new SignupRequest(null);
 
         mockMvc.perform(
-                        post("/api/signup")
+                        post("/api/v1/signup")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -79,7 +88,7 @@ class MemberControllerTest {
         SignupRequest request = new SignupRequest("");
 
         mockMvc.perform(
-                        post("/api/signup")
+                        post("/api/v1/signup")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -96,7 +105,7 @@ class MemberControllerTest {
         when(memberQueryService.login(any())).thenReturn(LoginServiceResponse.builder().build());
 
         mockMvc.perform(
-                        post("/api/login")
+                        post("/api/v1/login")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -110,7 +119,7 @@ class MemberControllerTest {
         LoginRequest request = new LoginRequest(null);
 
         mockMvc.perform(
-                        post("/api/login")
+                        post("/api/v1/login")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -124,11 +133,30 @@ class MemberControllerTest {
         LoginRequest request = new LoginRequest("");
 
         mockMvc.perform(
-                        post("/api/login")
+                        post("/api/v1/login")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("로그인 회원 정보 조회")
+    @Test
+    void getMember() throws Exception {
+        MemberDetails memberDetails = new MemberPrincipal(1L, NAME, MemberState.ACTIVITY);
+
+        when(authMemberArgument.supportsParameter(any())).thenReturn(true);
+        when(authMemberArgument.resolveArgument(any(), any(), any(), any())).thenReturn(memberDetails);
+
+        // given
+        mockMvc.perform(
+                        get("/api/v1/members")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(NAME))
+                .andExpect(jsonPath("$.state").value(MemberState.ACTIVITY.name()));
     }
 }
