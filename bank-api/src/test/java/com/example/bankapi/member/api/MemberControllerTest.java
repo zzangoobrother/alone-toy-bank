@@ -6,8 +6,8 @@ import com.example.bankapi.global.handler.AuthMemberArgument;
 import com.example.bankapi.global.model.MemberPrincipal;
 import com.example.bankapi.member.api.dto.request.LoginRequest;
 import com.example.bankapi.member.api.dto.request.SignupRequest;
-import com.example.bankapi.member.applications.MemberCommandService;
-import com.example.bankapi.member.applications.MemberQueryService;
+import com.example.bankapi.member.applications.MemberSignupService;
+import com.example.bankapi.member.applications.MemberLoginService;
 import com.example.bankapi.member.applications.dto.response.LoginServiceResponse;
 import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
 import com.example.bankmember.domain.MemberState;
@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,10 +39,10 @@ class MemberControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private MemberCommandService memberCommandService;
+    private MemberSignupService memberSignupService;
 
     @MockBean
-    private MemberQueryService memberQueryService;
+    private MemberLoginService memberLoginService;
 
     @MockBean
     private JwtProvider jwtProvider;
@@ -57,7 +58,7 @@ class MemberControllerTest {
         // given
         SignupRequest request = new SignupRequest(NAME);
 
-        when(memberCommandService.signup(any())).thenReturn(SignupServiceResponse.builder().build());
+        when(memberSignupService.signup(any())).thenReturn(SignupServiceResponse.builder().build());
 
         mockMvc.perform(
                 post("/api/v1/signup")
@@ -100,9 +101,11 @@ class MemberControllerTest {
     @Test
     void login() throws Exception {
         // given
+        String token = "token";
         LoginRequest request = new LoginRequest(NAME);
 
-        when(memberQueryService.login(any())).thenReturn(LoginServiceResponse.builder().build());
+        when(memberLoginService.login(any())).thenReturn(LoginServiceResponse.builder().name(NAME).build());
+        when(jwtProvider.createToken(anyString())).thenReturn(token);
 
         mockMvc.perform(
                         post("/api/v1/login")
@@ -110,7 +113,8 @@ class MemberControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").value(token));
     }
 
     @DisplayName("회원명이 null 이면 에러")
