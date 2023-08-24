@@ -11,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class MemberCommandService {
+public class MemberSignupService {
 
     private final MemberCommandRepository memberCommandRepository;
 
-    public MemberCommandService(MemberCommandRepository memberCommandRepository) {
+    public MemberSignupService(MemberCommandRepository memberCommandRepository) {
         this.memberCommandRepository = memberCommandRepository;
     }
 
