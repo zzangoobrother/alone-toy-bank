@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
 @Service
-public class MemberQueryService {
+public class MemberLoginService {
 
     private final MemberQueryRepository memberQueryRepository;
 
-    public MemberQueryService(MemberQueryRepository memberQueryRepository) {
+    public MemberLoginService(MemberQueryRepository memberQueryRepository) {
         this.memberQueryRepository = memberQueryRepository;
     }
 

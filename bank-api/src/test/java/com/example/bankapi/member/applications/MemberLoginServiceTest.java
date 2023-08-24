@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MemberQueryServiceTest {
+class MemberLoginServiceTest {
 
     private FakeMemberRepository memberQueryRepository;
 
-    private MemberQueryService memberQueryService;
+    private MemberLoginService memberLoginService;
 
     @BeforeEach
     void init() {
         memberQueryRepository = new FakeMemberRepository();
-        memberQueryService = new MemberQueryService(memberQueryRepository);
+        memberLoginService = new MemberLoginService(memberQueryRepository);
 
         Member member = Member.builder().name(Name.newInstance("홍길동")).state(MemberState.ACTIVITY).build();
         memberQueryRepository.save(member);
@@ -32,7 +32,7 @@ class MemberQueryServiceTest {
     void login() {
         LoginServiceRequest request = new LoginServiceRequest("홍길동");
 
-        LoginServiceResponse result = memberQueryService.login(request);
+        LoginServiceResponse result = memberLoginService.login(request);
 
         assertThat(request.getName()).isEqualTo(result.getName());
     }

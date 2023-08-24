@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class MemberCommandServiceImplTest {
+class MemberSignupServiceImplTest {
 
     private MemberCommandRepository memberCommandRepository;
-    private MemberCommandService memberCommandService;
+    private MemberSignupService memberSignupService;
 
     @BeforeEach
     void init() {
         memberCommandRepository = new FakeMemberRepository();
-        memberCommandService = new MemberCommandService(memberCommandRepository);
+        memberSignupService = new MemberSignupService(memberCommandRepository);
     }
 
     @DisplayName("회원 가입 성공")
@@ -27,7 +27,7 @@ class MemberCommandServiceImplTest {
     void signup() {
         SignupServiceRequest request = new SignupServiceRequest("홍길동");
 
-        SignupServiceResponse result = memberCommandService.signup(request);
+        SignupServiceResponse result = memberSignupService.signup(request);
 
         assertThat(result.getName()).isEqualTo(request.getName());
     }
@@ -37,7 +37,7 @@ class MemberCommandServiceImplTest {
     void nullNameInput() {
         SignupServiceRequest request = new SignupServiceRequest(null);
 
-        assertThatThrownBy(() -> memberCommandService.signup(request))
+        assertThatThrownBy(() -> memberSignupService.signup(request))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -46,7 +46,7 @@ class MemberCommandServiceImplTest {
     void emptyNameInput() {
         SignupServiceRequest request = new SignupServiceRequest("");
 
-        assertThatThrownBy(() -> memberCommandService.signup(request))
+        assertThatThrownBy(() -> memberSignupService.signup(request))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
