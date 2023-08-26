@@ -2,6 +2,7 @@ package com.example.bankproduct.infrastructure.repositories;
 
 import com.example.bankproduct.applications.port.ProductCommandRepository;
 import com.example.bankproduct.domain.Product;
+import com.example.bankproduct.infrastructure.entities.ProductEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,7 +16,7 @@ public class ProductCommandRepositoryImpl implements ProductCommandRepository {
 
     @Override
     public Product save(Product product) {
-
-        return null;
+        ProductEntity productEntity = ProductEntity.toEntity(product);
+        return jpaProductRepository.save(productEntity).toModel();
     }
 }

@@ -3,8 +3,10 @@ package com.example.bankmember.domain;
 import com.example.bankcommon.domain.Name;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 public class Member {
@@ -16,6 +18,10 @@ public class Member {
 
     @Builder
     public Member(Long id, Name name, MemberState state, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        if (Objects.isNull(state)) {
+            throw new IllegalArgumentException("상태는 필수값 입니다.");
+        }
+
         this.id = id;
         this.name = name;
         this.state = state;
