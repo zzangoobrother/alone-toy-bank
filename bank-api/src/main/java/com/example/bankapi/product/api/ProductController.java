@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class ProductController {
 
@@ -21,7 +23,7 @@ public class ProductController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/v1/products")
-    public CreateProductResponse create(@RequestBody CreateProductRequest request) {
+    public CreateProductResponse create(@Valid @RequestBody CreateProductRequest request) {
         CreateProductServiceResponse response = productService.create(request.toServiceRequest());
         return CreateProductResponse.toResponse(response);
     }

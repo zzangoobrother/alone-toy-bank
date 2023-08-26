@@ -1,5 +1,6 @@
 package com.example.bankapi.product.applications.dto.response;
 
+import com.example.bankproduct.domain.Product;
 import com.example.bankproduct.domain.ProductState;
 import com.example.bankproduct.domain.ProductType;
 import lombok.Builder;
@@ -16,5 +17,13 @@ public class CreateProductServiceResponse {
         this.type = type;
         this.name = name;
         this.state = state;
+    }
+
+    public static CreateProductServiceResponse of(Product product) {
+        return CreateProductServiceResponse.builder()
+                .type(product.getType())
+                .name(product.getName().getName())
+                .state(product.getState())
+                .build();
     }
 }
