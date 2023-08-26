@@ -1,7 +1,7 @@
 package com.example.bankmember.infrastructure.entities;
 
-import com.example.bankcommon.entity.BaseEntity;
-import com.example.bankcommon.entity.Name;
+import com.example.bankcommon.domain.BaseEntity;
+import com.example.bankcommon.domain.Name;
 import com.example.bankmember.domain.Member;
 import com.example.bankmember.domain.MemberState;
 import lombok.AccessLevel;

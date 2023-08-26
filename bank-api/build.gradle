@@ -1,8 +1,10 @@
 dependencies {
     implementation(project(":bank-member"))
+    implementation(project(":bank-product"))
     implementation(project(":bank-common"))
 
     testImplementation(testFixtures(project(":bank-member")))
+    testImplementation(testFixtures(project(":bank-product")))
     testImplementation(testFixtures(project(":bank-common")))
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
