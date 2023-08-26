@@ -57,4 +57,46 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.name").value(response.getName()))
                 .andExpect(jsonPath("$.state").value(response.getState().name()));
     }
+
+    @DisplayName("상품명이 null 이면 에러")
+    @Test
+    void nullName() throws Exception {
+        CreateProductRequest request = new CreateProductRequest(null, ProductType.LOAN);
+
+        mockMvc.perform(
+                        post("/api/v1/products")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("상품명이 빈값이면 에러")
+    @Test
+    void notInputName() throws Exception {
+        CreateProductRequest request = new CreateProductRequest("", ProductType.LOAN);
+
+        mockMvc.perform(
+                        post("/api/v1/products")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("상품 타입이 null 이면 에러")
+    @Test
+    void nullType() throws Exception {
+        CreateProductRequest request = new CreateProductRequest("대출", null);
+
+        mockMvc.perform(
+                        post("/api/v1/products")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -14,7 +15,7 @@ public class CreateProductRequest {
     @NotBlank(message = "상품명은 필수값 입니다.")
     private String name;
 
-    @NotBlank(message = "상품 타입은 필수값 입니다.")
+    @NotNull(message = "상품 타입은 필수값 입니다.")
     private ProductType type;
 
     public CreateProductRequest(String name, ProductType type) {
