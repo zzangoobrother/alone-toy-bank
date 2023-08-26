@@ -1,5 +1,6 @@
 package com.example.bankapi.member.acceptance;
 
+import com.example.bankapi.AcceptanceTest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;

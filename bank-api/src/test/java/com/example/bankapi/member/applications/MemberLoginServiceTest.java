@@ -2,7 +2,7 @@ package com.example.bankapi.member.applications;
 
 import com.example.bankapi.member.applications.dto.request.LoginServiceRequest;
 import com.example.bankapi.member.applications.dto.response.LoginServiceResponse;
-import com.example.bankcommon.entity.Name;
+import com.example.bankcommon.domain.Name;
 import com.example.bankmember.applications.FakeMemberRepository;
 import com.example.bankmember.domain.Member;
 import com.example.bankmember.domain.MemberState;

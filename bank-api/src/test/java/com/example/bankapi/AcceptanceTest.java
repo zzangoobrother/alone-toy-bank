@@ -1,4 +1,4 @@
-package com.example.bankapi.member.acceptance;
+package com.example.bankapi;
 
 import com.example.bankapi.utils.DatabaseCleanup;
 import io.restassured.RestAssured;

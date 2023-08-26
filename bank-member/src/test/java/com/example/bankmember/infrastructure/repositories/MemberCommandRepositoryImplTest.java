@@ -1,6 +1,6 @@
 package com.example.bankmember.infrastructure.repositories;
 
-import com.example.bankcommon.entity.Name;
+import com.example.bankcommon.domain.Name;
 import com.example.bankmember.domain.Member;
 import com.example.bankmember.domain.MemberState;
 import com.example.bankmember.infrastructure.entities.MemberEntity;

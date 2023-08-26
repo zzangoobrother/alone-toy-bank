@@ -1,4 +1,4 @@
-package com.example.bankcommon.entity;
+package com.example.bankcommon.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;

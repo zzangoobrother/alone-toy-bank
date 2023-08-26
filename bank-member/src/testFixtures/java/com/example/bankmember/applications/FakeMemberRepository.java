@@ -1,6 +1,6 @@
 package com.example.bankmember.applications;
 
-import com.example.bankcommon.entity.Name;
+import com.example.bankcommon.domain.Name;
 import com.example.bankmember.applications.port.MemberCommandRepository;
 import com.example.bankmember.applications.port.MemberQueryRepository;
 import com.example.bankmember.domain.Member;
