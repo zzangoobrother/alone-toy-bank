@@ -1,6 +1,6 @@
 package com.example.bankmember.infrastructure.repositories;
 
-import com.example.bankcommon.entity.Name;
+import com.example.bankcommon.domain.Name;
 import com.example.bankcommon.exception.EntityNotFoundException;
 import com.example.bankcommon.exception.ErrorCode;
 import com.example.bankmember.applications.port.MemberQueryRepository;

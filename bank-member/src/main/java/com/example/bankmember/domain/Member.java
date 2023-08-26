@@ -1,6 +1,6 @@
 package com.example.bankmember.domain;
 
-import com.example.bankcommon.entity.Name;
+import com.example.bankcommon.domain.Name;
 import lombok.Builder;
 import lombok.Getter;
 

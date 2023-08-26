@@ -3,6 +3,7 @@ package com.example.bankapi.product.api;
 import com.example.bankapi.product.api.dto.request.CreateProductRequest;
 import com.example.bankapi.product.applications.ProductService;
 import com.example.bankapi.product.applications.dto.response.CreateProductServiceResponse;
+import com.example.bankproduct.domain.ProductState;
 import com.example.bankproduct.domain.ProductType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = ProductController.class)
@@ -35,9 +37,14 @@ class ProductControllerTest {
     @Test
     void create() throws Exception {
         // given
-        CreateProductRequest request = new CreateProductRequest("여신", ProductType.LOAN);
+        CreateProductRequest request = new CreateProductRequest("대출", ProductType.LOAN);
+        CreateProductServiceResponse response = CreateProductServiceResponse.builder()
+                .type(ProductType.LOAN)
+                .name("대출")
+                .state(ProductState.ACTIVITY)
+                .build();
 
-        when(productService.create(any())).thenReturn(CreateProductServiceResponse.builder().build());
+        when(productService.create(any())).thenReturn(response);
 
         mockMvc.perform(
                         post("/api/v1/products")
@@ -45,6 +52,9 @@ class ProductControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.type").value(response.getType().name()))
+                .andExpect(jsonPath("$.name").value(response.getName()))
+                .andExpect(jsonPath("$.state").value(response.getState().name()));
     }
 }

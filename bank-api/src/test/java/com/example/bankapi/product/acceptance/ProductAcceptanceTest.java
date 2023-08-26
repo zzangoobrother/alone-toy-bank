@@ -2,6 +2,7 @@ package com.example.bankapi.product.acceptance;
 
 import com.example.bankapi.AcceptanceTest;
 import com.example.bankapi.member.acceptance.MemberSteps;
+import com.example.bankproduct.domain.ProductType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public class ProductAcceptanceTest extends AcceptanceTest {
         // when
         String token = MemberSteps.로그인_되어_있음("홍길동");
 
-        ExtractableResponse<Response> response = ProductSteps.상품_등록("대출", "loan", token);
+        ExtractableResponse<Response> response = ProductSteps.상품_등록("대출", ProductType.LOAN, token);
 
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -36,7 +37,7 @@ public class ProductAcceptanceTest extends AcceptanceTest {
         // when
         String token = MemberSteps.로그인_되어_있음("홍길동");
 
-        ExtractableResponse<Response> response = ProductSteps.상품_등록("입출금", "deposit", token);
+        ExtractableResponse<Response> response = ProductSteps.상품_등록("입출금", ProductType.DEPOSIT, token);
 
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
