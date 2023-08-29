@@ -23,7 +23,14 @@ public class ProductSteps extends AcceptanceTestSteps {
                 .then().log().all().extract();
     }
 
-    public static ExtractableResponse<Response> 상품_조회(Long id, String token) {
+    public static ExtractableResponse<Response> 상품_전체_조회(String token) {
+        return given(token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/v1/products")
+                .then().log().all().extract();
+    }
+
+    public static ExtractableResponse<Response> 상품_단건_조회(Long id, String token) {
         return given(token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/v1/products/{id}", id)

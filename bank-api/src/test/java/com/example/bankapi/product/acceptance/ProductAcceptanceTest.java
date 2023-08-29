@@ -47,13 +47,29 @@ public class ProductAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
-    @DisplayName("상품을 조회한다.")
+    @DisplayName("상품을 전체 조회한다.")
+    @Test
+    void getProducts() {
+        // when
+        ProductSteps.상품_등록(LOAN_NAME, ProductType.LOAN, token);
+        ProductSteps.상품_등록(DEPOSIT_NAME, ProductType.DEPOSIT, token);
+
+        ExtractableResponse<Response> response = ProductSteps.상품_전체_조회(token);
+
+        //then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getString("name")).isEqualTo(LOAN_NAME);
+        assertThat(response.jsonPath().getString("type")).isEqualTo(ProductType.LOAN);
+        assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.ACTIVITY);
+    }
+
+    @DisplayName("상품을 단건 조회한다.")
     @Test
     void getProduct() {
         // when
         ProductSteps.상품_등록(LOAN_NAME, ProductType.LOAN, token);
 
-        ExtractableResponse<Response> response = ProductSteps.상품_조회(1L, token);
+        ExtractableResponse<Response> response = ProductSteps.상품_단건_조회(1L, token);
 
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
