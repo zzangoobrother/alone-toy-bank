@@ -3,6 +3,7 @@ package com.example.bankapi.product.api;
 import com.example.bankapi.product.api.dto.request.CreateProductRequest;
 import com.example.bankapi.product.applications.ProductService;
 import com.example.bankapi.product.applications.dto.response.CreateProductServiceResponse;
+import com.example.bankapi.product.applications.dto.response.ProductServiceResponse;
 import com.example.bankproduct.domain.ProductState;
 import com.example.bankproduct.domain.ProductType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,8 +15,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -98,5 +103,61 @@ class ProductControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("상품 전체 조회")
+    @Test
+    void getProducts() throws Exception {
+        ProductServiceResponse response1 = ProductServiceResponse.builder()
+                .id(1L)
+                .type(ProductType.LOAN)
+                .name("대출")
+                .state(ProductState.ACTIVITY)
+                .build();
+        ProductServiceResponse response2 = ProductServiceResponse.builder()
+                .id(2L)
+                .type(ProductType.DEPOSIT)
+                .name("입출금")
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        List<ProductServiceResponse> responses = List.of(response1, response2);
+        when(productService.getProducts()).thenReturn(responses);
+
+        mockMvc.perform(
+                        get("/api/v1/products")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].type").value(response1.getType().name()))
+                .andExpect(jsonPath("$[0].name").value(response1.getName()))
+                .andExpect(jsonPath("$[0].state").value(response1.getState().name()))
+                .andExpect(jsonPath("$[1].type").value(response2.getType().name()))
+                .andExpect(jsonPath("$[1].name").value(response2.getName()))
+                .andExpect(jsonPath("$[1].state").value(response2.getState().name()));
+    }
+
+    @DisplayName("상품 단건 조회")
+    @Test
+    void getProduct() throws Exception {
+        ProductServiceResponse response = ProductServiceResponse.builder()
+                .id(1L)
+                .type(ProductType.LOAN)
+                .name("대출")
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        when(productService.getProduct(anyLong())).thenReturn(response);
+
+        mockMvc.perform(
+                        get("/api/v1/products/{id}", 1)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.type").value(response.getType().name()))
+                .andExpect(jsonPath("$.name").value(response.getName()))
+                .andExpect(jsonPath("$.state").value(response.getState().name()));
     }
 }
