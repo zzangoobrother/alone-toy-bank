@@ -35,12 +35,12 @@ public class ProductService {
     }
 
     public List<ProductServiceResponse> getProducts() {
-        return productQueryRepository.findAll().stream()
+        return productQueryRepository.getAll().stream()
                 .map(product -> ProductServiceResponse.of(product))
                 .toList();
     }
 
     public ProductServiceResponse getProduct(long productId) {
-        return null;
+        return ProductServiceResponse.of(productQueryRepository.getById(productId));
     }
 }

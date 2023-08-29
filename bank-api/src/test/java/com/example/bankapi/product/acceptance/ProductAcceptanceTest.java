@@ -58,9 +58,9 @@ public class ProductAcceptanceTest extends AcceptanceTest {
 
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getString("name")).isEqualTo(LOAN_NAME);
-        assertThat(response.jsonPath().getString("type")).isEqualTo(ProductType.LOAN);
-        assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.ACTIVITY);
+        assertThat(response.jsonPath().getList("name")).contains(LOAN_NAME, DEPOSIT_NAME);
+        assertThat(response.jsonPath().getList("type")).contains(ProductType.LOAN, ProductType.DEPOSIT);
+        assertThat(response.jsonPath().getList("state")).contains(ProductState.ACTIVITY, ProductState.ACTIVITY);
     }
 
     @DisplayName("상품을 단건 조회한다.")

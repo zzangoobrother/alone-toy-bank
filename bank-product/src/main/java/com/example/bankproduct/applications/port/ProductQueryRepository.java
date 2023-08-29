@@ -5,5 +5,7 @@ import com.example.bankproduct.domain.Product;
 import java.util.List;
 
 public interface ProductQueryRepository {
-    List<Product> findAll();
+    List<Product> getAll();
+
+    Product getById(long productId);
 }
