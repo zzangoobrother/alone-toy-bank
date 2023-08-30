@@ -1,6 +1,5 @@
 package com.example.bankapi.product.applications;
 
-import com.example.bankapi.product.api.dto.response.ProductResponse;
 import com.example.bankapi.product.applications.dto.request.CreateProductServiceRequest;
 import com.example.bankapi.product.applications.dto.response.CreateProductServiceResponse;
 import com.example.bankapi.product.applications.dto.response.ProductServiceResponse;
@@ -51,6 +50,11 @@ public class ProductService {
 
     @Transactional
     public ProductServiceResponse update(long productId, String name) {
-        return null;
+        Product product = productQueryRepository.getById(productId);
+
+        product = product.update(name);
+        product = productCommandRepository.save(product);
+
+        return ProductServiceResponse.of(product);
     }
 }

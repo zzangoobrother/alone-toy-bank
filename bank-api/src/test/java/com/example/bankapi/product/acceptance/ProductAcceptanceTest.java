@@ -101,8 +101,8 @@ public class ProductAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(response.jsonPath().getString("name")).isEqualTo(unsecuredLoan),
-                () -> assertThat(response.jsonPath().getString("type")).isEqualTo(ProductType.LOAN),
-                () -> assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.ACTIVITY)
+                () -> assertThat(response.jsonPath().getString("type")).isEqualTo(ProductType.LOAN.name()),
+                () -> assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.ACTIVITY.name())
         );
     }
 }
