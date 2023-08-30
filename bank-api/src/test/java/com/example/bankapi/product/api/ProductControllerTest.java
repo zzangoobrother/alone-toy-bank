@@ -1,6 +1,7 @@
 package com.example.bankapi.product.api;
 
 import com.example.bankapi.product.api.dto.request.CreateProductRequest;
+import com.example.bankapi.product.api.dto.request.UpdateProductRequest;
 import com.example.bankapi.product.applications.ProductService;
 import com.example.bankapi.product.applications.dto.response.CreateProductServiceResponse;
 import com.example.bankapi.product.applications.dto.response.ProductServiceResponse;
@@ -17,11 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -151,7 +150,7 @@ class ProductControllerTest {
         when(productService.getProduct(anyLong())).thenReturn(response);
 
         mockMvc.perform(
-                        get("/api/v1/products/{id}", 1)
+                        get("/api/v1/products/{productId}", 1)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -159,5 +158,62 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.type").value(response.getType().name()))
                 .andExpect(jsonPath("$.name").value(response.getName()))
                 .andExpect(jsonPath("$.state").value(response.getState().name()));
+    }
+
+    @DisplayName("상품 수정")
+    @Test
+    void update() throws Exception {
+        UpdateProductRequest request = new UpdateProductRequest("신용대출");
+        ProductServiceResponse response = ProductServiceResponse.builder()
+                .id(1L)
+                .type(ProductType.LOAN)
+                .name("신용대출")
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        when(productService.update(anyLong(), anyString())).thenReturn(response);
+
+        mockMvc.perform(
+                        put("/api/v1/products/{productId}", 1)
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.type").value(response.getType().name()))
+                .andExpect(jsonPath("$.name").value(response.getName()))
+                .andExpect(jsonPath("$.state").value(response.getState().name()));
+    }
+
+    @DisplayName("상품 수정 상품명이 null 이면 에러")
+    @Test
+    void updateNotNull() throws Exception {
+        UpdateProductRequest request = new UpdateProductRequest(null);
+
+        mockMvc.perform(
+                        put("/api/v1/products/{productId}", 1)
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("유효한 입력값이 아닙니다."))
+                .andExpect(jsonPath("$.errors.[0].reason").value("상품명은 필수값 입니다."));
+    }
+
+    @DisplayName("상품 수정 상품명이 빈값이면 에러")
+    @Test
+    void updateNotEmpty() throws Exception {
+        UpdateProductRequest request = new UpdateProductRequest("");
+
+        mockMvc.perform(
+                        put("/api/v1/products/{productId}", 1)
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("유효한 입력값이 아닙니다."))
+                .andExpect(jsonPath("$.errors.[0].reason").value("상품명은 필수값 입니다."));
     }
 }

@@ -36,4 +36,15 @@ public class ProductSteps extends AcceptanceTestSteps {
                 .when().get("/api/v1/products/{id}", id)
                 .then().log().all().extract();
     }
+
+    public static ExtractableResponse<Response> 상품_수정(Long productId, String name, String token) {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", name);
+
+        return given(token)
+                .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().put("/api/v1/products/{productId}", productId)
+                .then().log().all().extract();
+    }
 }
