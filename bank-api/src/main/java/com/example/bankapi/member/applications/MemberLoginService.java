@@ -18,6 +18,7 @@ public class MemberLoginService {
         this.memberQueryRepository = memberQueryRepository;
     }
 
+    @Transactional(readOnly = true)
     public LoginServiceResponse login(LoginServiceRequest request) {
         Member member = memberQueryRepository.getMember(request.getName(), MemberState.ACTIVITY);
 

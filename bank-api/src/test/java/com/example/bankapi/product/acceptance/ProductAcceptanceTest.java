@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class ProductAcceptanceTest extends AcceptanceTest {
 
@@ -50,31 +51,58 @@ public class ProductAcceptanceTest extends AcceptanceTest {
     @DisplayName("상품을 전체 조회한다.")
     @Test
     void getProducts() {
-        // when
+        // given
         ProductSteps.상품_등록(LOAN_NAME, ProductType.LOAN, token);
         ProductSteps.상품_등록(DEPOSIT_NAME, ProductType.DEPOSIT, token);
 
+        // when
         ExtractableResponse<Response> response = ProductSteps.상품_전체_조회(token);
 
         //then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getList("name")).contains(LOAN_NAME, DEPOSIT_NAME);
-        assertThat(response.jsonPath().getList("type")).contains(ProductType.LOAN, ProductType.DEPOSIT);
-        assertThat(response.jsonPath().getList("state")).contains(ProductState.ACTIVITY, ProductState.ACTIVITY);
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getList("name")).contains(LOAN_NAME, DEPOSIT_NAME),
+                () -> assertThat(response.jsonPath().getList("type")).contains(ProductType.LOAN.name(), ProductType.DEPOSIT.name()),
+                () -> assertThat(response.jsonPath().getList("state")).contains(ProductState.ACTIVITY.name(), ProductState.ACTIVITY.name())
+        );
     }
 
     @DisplayName("상품을 단건 조회한다.")
     @Test
     void getProduct() {
-        // when
-        ProductSteps.상품_등록(LOAN_NAME, ProductType.LOAN, token);
+        // given
+        long productId = ProductSteps.상품_등록(LOAN_NAME, ProductType.LOAN, token).jsonPath().getLong("id");
 
-        ExtractableResponse<Response> response = ProductSteps.상품_단건_조회(1L, token);
+        // when
+        ExtractableResponse<Response> response = ProductSteps.상품_단건_조회(productId, token);
 
         //then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getString("name")).isEqualTo(LOAN_NAME);
-        assertThat(response.jsonPath().getString("type")).isEqualTo(ProductType.LOAN);
-        assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.ACTIVITY);
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("name")).isEqualTo(LOAN_NAME),
+                () -> assertThat(response.jsonPath().getString("type")).isEqualTo(ProductType.LOAN.name()),
+                () -> assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.ACTIVITY.name())
+        );
+    }
+
+    @DisplayName("상품 정보 수정한다.")
+    @Test
+    void update() {
+        // given
+        String unsecuredLoan = "신용대출";
+
+        long productId = ProductSteps.상품_등록(LOAN_NAME, ProductType.LOAN, token).jsonPath().getLong("id");
+
+        // when
+        ProductSteps.상품_수정(productId, unsecuredLoan, token);
+        ExtractableResponse<Response> response = ProductSteps.상품_단건_조회(productId, token);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("name")).isEqualTo(unsecuredLoan),
+                () -> assertThat(response.jsonPath().getString("type")).isEqualTo(ProductType.LOAN.name()),
+                () -> assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.ACTIVITY.name())
+        );
     }
 }

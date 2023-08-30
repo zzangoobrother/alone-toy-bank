@@ -1,6 +1,7 @@
 package com.example.bankapi.product.api;
 
 import com.example.bankapi.product.api.dto.request.CreateProductRequest;
+import com.example.bankapi.product.api.dto.request.UpdateProductRequest;
 import com.example.bankapi.product.api.dto.response.CreateProductResponse;
 import com.example.bankapi.product.api.dto.response.ProductResponse;
 import com.example.bankapi.product.applications.ProductService;
@@ -39,6 +40,12 @@ public class ProductController {
     @GetMapping("/api/v1/products/{productId}")
     public ProductResponse getProducts(@PathVariable Long productId) {
         ProductServiceResponse response = productService.getProduct(productId);
+        return ProductResponse.toResponse(response);
+    }
+
+    @PutMapping("/api/v1/products/{productId}")
+    public ProductResponse update(@PathVariable Long productId, @Valid @RequestBody UpdateProductRequest request) {
+        ProductServiceResponse response = productService.update(productId, request.getName());
         return ProductResponse.toResponse(response);
     }
 }

@@ -33,4 +33,15 @@ public class Product {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
+
+    public Product update(String name) {
+        return Product.builder()
+                .id(getId())
+                .type(getType())
+                .name(Name.newInstance(name))
+                .state(getState())
+                .createdAt(getCreatedAt())
+                .modifiedAt(getModifiedAt())
+                .build();
+    }
 }

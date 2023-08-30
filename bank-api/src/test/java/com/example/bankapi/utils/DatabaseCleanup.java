@@ -27,7 +27,6 @@ public class DatabaseCleanup implements InitializingBean {
     public void execute() {
         jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY FALSE");
         for (String tableName : tableNames) {
-            System.out.println(tableName);
             jdbcTemplate.execute("TRUNCATE TABLE " + tableName);
         }
         jdbcTemplate.execute("SET REFERENTIAL_INTEGRITY TRUE");
