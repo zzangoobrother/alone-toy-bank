@@ -47,4 +47,11 @@ public class ProductSteps extends AcceptanceTestSteps {
                 .when().put("/api/v1/products/{productId}", productId)
                 .then().log().all().extract();
     }
+
+    public static ExtractableResponse<Response> 상품_삭제(Long productId, String token) {
+        return given(token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/api/v1/products/{productId}", productId)
+                .then().log().all().extract();
+    }
 }

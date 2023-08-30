@@ -48,4 +48,10 @@ public class ProductController {
         ProductServiceResponse response = productService.update(productId, request.getName());
         return ProductResponse.toResponse(response);
     }
+
+    @DeleteMapping("/api/v1/products/{productId}")
+    public ProductResponse delete(@PathVariable Long productId) {
+        ProductServiceResponse response = productService.delete(productId);
+        return ProductResponse.toResponse(response);
+    }
 }

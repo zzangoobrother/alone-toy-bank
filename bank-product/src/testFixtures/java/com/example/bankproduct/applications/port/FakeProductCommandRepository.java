@@ -2,6 +2,7 @@ package com.example.bankproduct.applications.port;
 
 import com.example.bankcommon.domain.Name;
 import com.example.bankproduct.domain.Product;
+import com.example.bankproduct.domain.ProductState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,13 @@ public class FakeProductCommandRepository implements ProductCommandRepository, P
     @Override
     public List<Product> getAll() {
         return products;
+    }
+
+    @Override
+    public Product getById(long productId, ProductState state) {
+        return products.stream()
+                .filter(product -> product.getId() == productId && product.getState() == state)
+                .findAny().get();
     }
 
     @Override

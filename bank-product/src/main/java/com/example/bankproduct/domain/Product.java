@@ -44,4 +44,23 @@ public class Product {
                 .modifiedAt(getModifiedAt())
                 .build();
     }
+
+    public boolean isActivity() {
+        return this.state == ProductState.ACTIVITY;
+    }
+
+    public boolean isInactivity() {
+        return this.state == ProductState.INACTIVITY;
+    }
+
+    public Product delete() {
+        return Product.builder()
+                .id(getId())
+                .type(getType())
+                .name(getName())
+                .state(ProductState.INACTIVITY)
+                .createdAt(getCreatedAt())
+                .modifiedAt(getModifiedAt())
+                .build();
+    }
 }

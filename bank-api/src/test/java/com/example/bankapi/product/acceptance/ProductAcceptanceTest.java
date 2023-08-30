@@ -105,4 +105,22 @@ public class ProductAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.ACTIVITY.name())
         );
     }
+
+    @DisplayName("상품을 삭제한다.(상태 비활동으로 변경)")
+    @Test
+    void delete() {
+        // given
+        long productId = ProductSteps.상품_등록(LOAN_NAME, ProductType.LOAN, token).jsonPath().getLong("id");
+
+        // when
+        ExtractableResponse<Response> response = ProductSteps.상품_삭제(productId, token);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("name")).isEqualTo(LOAN_NAME),
+                () -> assertThat(response.jsonPath().getString("type")).isEqualTo(ProductType.LOAN.name()),
+                () -> assertThat(response.jsonPath().getString("state")).isEqualTo(ProductState.INACTIVITY.name())
+        );
+    }
 }

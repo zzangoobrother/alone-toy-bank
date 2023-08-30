@@ -216,4 +216,27 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.message").value("유효한 입력값이 아닙니다."))
                 .andExpect(jsonPath("$.errors.[0].reason").value("상품명은 필수값 입니다."));
     }
+
+    @DisplayName("상품 삭제")
+    @Test
+    void deleteProduct() throws Exception {
+        ProductServiceResponse response = ProductServiceResponse.builder()
+                .id(1L)
+                .type(ProductType.LOAN)
+                .name("대출")
+                .state(ProductState.INACTIVITY)
+                .build();
+
+        when(productService.delete(anyLong())).thenReturn(response);
+
+        mockMvc.perform(
+                        delete("/api/v1/products/{productId}", 1)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.type").value(response.getType().name()))
+                .andExpect(jsonPath("$.name").value(response.getName()))
+                .andExpect(jsonPath("$.state").value(response.getState().name()));
+    }
 }
