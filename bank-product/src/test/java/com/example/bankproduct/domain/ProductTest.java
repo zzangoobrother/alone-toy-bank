@@ -4,7 +4,9 @@ import com.example.bankcommon.domain.Name;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ProductTest {
 
@@ -28,5 +30,53 @@ class ProductTest {
                 .state(null)
                 .build())
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("상품명 수정")
+    @Test
+    void upateName() {
+        Product product = Product.builder()
+                .name(Name.newInstance("대출"))
+                .type(ProductType.LOAN)
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        Product updateProduct = product.update("신용대출");
+
+        assertAll(
+                () -> assertThat(updateProduct.getName().getName()).isEqualTo("신용대출"),
+                () -> assertThat(updateProduct.getType()).isEqualTo(product.getType())
+        );
+    }
+
+    @DisplayName("상품 상태 검증")
+    @Test
+    void isState() {
+        Product product = Product.builder()
+                .name(Name.newInstance("대출"))
+                .type(ProductType.LOAN)
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        assertAll(
+                () -> assertThat(product.isActivity()).isTrue(),
+                () -> assertThat(product.isInactivity()).isFalse()
+        );
+    }
+
+    @DisplayName("상품 삭제")
+    @Test
+    void delete() {
+        Product product = Product.builder()
+                .name(Name.newInstance("대출"))
+                .type(ProductType.LOAN)
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        Product deleteProduct = product.delete();
+
+        assertAll(
+                () -> assertThat(deleteProduct.getState()).isEqualTo(ProductState.INACTIVITY.name())
+        );
     }
 }
