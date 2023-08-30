@@ -19,6 +19,7 @@ public class MemberSignupService {
         this.memberCommandRepository = memberCommandRepository;
     }
 
+    @Transactional
     public SignupServiceResponse signup(SignupServiceRequest request) {
         Member member = Member.builder()
                 .name(Name.newInstance(request.getName()))

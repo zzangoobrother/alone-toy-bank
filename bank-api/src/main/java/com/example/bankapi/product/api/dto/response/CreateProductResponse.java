@@ -8,12 +8,14 @@ import lombok.Getter;
 
 @Getter
 public class CreateProductResponse {
+    private long id;
     private ProductType type;
     private String name;
     private ProductState state;
 
     @Builder
-    public CreateProductResponse(ProductType type, String name, ProductState state) {
+    public CreateProductResponse(long id, ProductType type, String name, ProductState state) {
+        this.id = id;
         this.type = type;
         this.name = name;
         this.state = state;
@@ -21,6 +23,7 @@ public class CreateProductResponse {
 
     public static CreateProductResponse toResponse(CreateProductServiceResponse response) {
         return CreateProductResponse.builder()
+                .id(response.getId())
                 .type(response.getType())
                 .name(response.getName())
                 .state(response.getState())

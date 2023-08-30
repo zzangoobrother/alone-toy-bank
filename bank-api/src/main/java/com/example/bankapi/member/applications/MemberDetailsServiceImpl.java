@@ -6,6 +6,7 @@ import com.example.bankapi.global.model.MemberPrincipal;
 import com.example.bankmember.applications.port.MemberQueryRepository;
 import com.example.bankmember.domain.Member;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberDetailsServiceImpl implements MemberDetailsService {
@@ -16,6 +17,7 @@ public class MemberDetailsServiceImpl implements MemberDetailsService {
         this.memberQueryRepository = memberQueryRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MemberDetails getMemberDetails(String name) {
         Member member = memberQueryRepository.getMember(name);

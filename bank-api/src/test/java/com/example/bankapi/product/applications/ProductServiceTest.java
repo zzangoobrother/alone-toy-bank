@@ -78,18 +78,38 @@ class ProductServiceTest {
     @DisplayName("상품 단건 조회")
     @Test
     void getProduct() {
-        Product loanProduct = Product.builder()
+        Product product = Product.builder()
                 .id(1L)
                 .type(ProductType.LOAN)
                 .name(Name.newInstance("대출"))
                 .state(ProductState.ACTIVITY)
                 .build();
 
-        productCommandRepository.save(loanProduct);
+        productCommandRepository.save(product);
 
         ProductServiceResponse responses = productService.getProduct(1L);
 
         assertThat(responses.getName()).isEqualTo("대출");
+        assertThat(responses.getType()).isEqualTo(ProductType.LOAN);
+        assertThat(responses.getState()).isEqualTo(ProductState.ACTIVITY);
+    }
+
+    @DisplayName("상품 수정")
+    @Test
+    void update() {
+        Product product = Product.builder()
+                .id(1L)
+                .type(ProductType.LOAN)
+                .name(Name.newInstance("대출"))
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        productCommandRepository.save(product);
+
+        ProductServiceResponse responses = productService.update(1L, "신용대출");
+
+        assertThat(responses.getId()).isEqualTo(product.getId());
+        assertThat(responses.getName()).isEqualTo("신용대출");
         assertThat(responses.getType()).isEqualTo(ProductType.LOAN);
         assertThat(responses.getState()).isEqualTo(ProductState.ACTIVITY);
     }

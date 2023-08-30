@@ -9,6 +9,7 @@ import com.example.bankproduct.applications.port.ProductQueryRepository;
 import com.example.bankproduct.domain.Product;
 import com.example.bankproduct.domain.ProductState;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ProductService {
         this.productQueryRepository = productQueryRepository;
     }
 
+    @Transactional
     public CreateProductServiceResponse create(CreateProductServiceRequest request) {
         Product product = Product.builder()
                 .type(request.getType())
@@ -34,13 +36,25 @@ public class ProductService {
         return CreateProductServiceResponse.of(saveProduct);
     }
 
+    @Transactional(readOnly = true)
     public List<ProductServiceResponse> getProducts() {
         return productQueryRepository.getAll().stream()
                 .map(product -> ProductServiceResponse.of(product))
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ProductServiceResponse getProduct(long productId) {
         return ProductServiceResponse.of(productQueryRepository.getById(productId));
+    }
+
+    @Transactional
+    public ProductServiceResponse update(long productId, String name) {
+        Product product = productQueryRepository.getById(productId);
+
+        product = product.update(name);
+        product = productCommandRepository.save(product);
+
+        return ProductServiceResponse.of(product);
     }
 }
