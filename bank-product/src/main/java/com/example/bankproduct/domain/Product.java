@@ -44,4 +44,12 @@ public class Product {
                 .modifiedAt(getModifiedAt())
                 .build();
     }
+
+    public boolean isActivity() {
+        return this.state == ProductState.ACTIVITY;
+    }
+
+    public boolean isInactivity() {
+        return this.state == ProductState.INACTIVITY;
+    }
 }

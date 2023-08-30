@@ -4,6 +4,8 @@ import com.example.bankapi.product.applications.dto.request.CreateProductService
 import com.example.bankapi.product.applications.dto.response.CreateProductServiceResponse;
 import com.example.bankapi.product.applications.dto.response.ProductServiceResponse;
 import com.example.bankcommon.domain.Name;
+import com.example.bankcommon.exception.ErrorCode;
+import com.example.bankcommon.exception.NotUpdateEntityInactivityException;
 import com.example.bankproduct.applications.port.ProductCommandRepository;
 import com.example.bankproduct.applications.port.ProductQueryRepository;
 import com.example.bankproduct.domain.Product;
@@ -45,12 +47,16 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductServiceResponse getProduct(long productId) {
-        return ProductServiceResponse.of(productQueryRepository.getById(productId));
+        return ProductServiceResponse.of(productQueryRepository.getById(productId, ProductState.ACTIVITY));
     }
 
     @Transactional
     public ProductServiceResponse update(long productId, String name) {
         Product product = productQueryRepository.getById(productId);
+
+        if (product.isInactivity()) {
+            throw new NotUpdateEntityInactivityException(ErrorCode.UPDATE_NOT_STATUS);
+        }
 
         product = product.update(name);
         product = productCommandRepository.save(product);

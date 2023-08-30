@@ -4,6 +4,7 @@ import com.example.bankapi.product.applications.dto.request.CreateProductService
 import com.example.bankapi.product.applications.dto.response.CreateProductServiceResponse;
 import com.example.bankapi.product.applications.dto.response.ProductServiceResponse;
 import com.example.bankcommon.domain.Name;
+import com.example.bankcommon.exception.NotUpdateEntityInactivityException;
 import com.example.bankproduct.applications.port.FakeProductCommandRepository;
 import com.example.bankproduct.applications.port.ProductCommandRepository;
 import com.example.bankproduct.applications.port.ProductQueryRepository;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ProductServiceTest {
 
@@ -112,5 +114,20 @@ class ProductServiceTest {
         assertThat(responses.getName()).isEqualTo("신용대출");
         assertThat(responses.getType()).isEqualTo(ProductType.LOAN);
         assertThat(responses.getState()).isEqualTo(ProductState.ACTIVITY);
+    }
+
+    @DisplayName("상품 수정 중 상품 상태가 비활동이라면 에러 발생")
+    @Test
+    void updateProductInactivity () {
+        Product product = Product.builder()
+                .id(1L)
+                .type(ProductType.LOAN)
+                .name(Name.newInstance("대출"))
+                .state(ProductState.INACTIVITY)
+                .build();
+
+        productCommandRepository.save(product);
+
+        assertThatThrownBy(() -> productService.update(1L, "신용대출")).isInstanceOf(NotUpdateEntityInactivityException.class);
     }
 }
