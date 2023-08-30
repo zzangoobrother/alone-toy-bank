@@ -52,4 +52,15 @@ public class Product {
     public boolean isInactivity() {
         return this.state == ProductState.INACTIVITY;
     }
+
+    public Product delete() {
+        return Product.builder()
+                .id(getId())
+                .type(getType())
+                .name(getName())
+                .state(ProductState.INACTIVITY)
+                .createdAt(getCreatedAt())
+                .modifiedAt(getModifiedAt())
+                .build();
+    }
 }

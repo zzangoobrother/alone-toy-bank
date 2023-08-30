@@ -130,4 +130,24 @@ class ProductServiceTest {
 
         assertThatThrownBy(() -> productService.update(1L, "신용대출")).isInstanceOf(NotUpdateEntityInactivityException.class);
     }
+
+    @DisplayName("상품 삭제")
+    @Test
+    void delete() {
+        Product product = Product.builder()
+                .id(1L)
+                .type(ProductType.LOAN)
+                .name(Name.newInstance("대출"))
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        productCommandRepository.save(product);
+
+        ProductServiceResponse responses = productService.delete(1L);
+
+        assertThat(responses.getId()).isEqualTo(product.getId());
+        assertThat(responses.getName()).isEqualTo("대출");
+        assertThat(responses.getType()).isEqualTo(ProductType.LOAN);
+        assertThat(responses.getState()).isEqualTo(ProductState.INACTIVITY);
+    }
 }

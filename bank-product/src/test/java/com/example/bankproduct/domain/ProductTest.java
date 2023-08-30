@@ -63,4 +63,20 @@ class ProductTest {
                 () -> assertThat(product.isInactivity()).isFalse()
         );
     }
+
+    @DisplayName("상품 삭제")
+    @Test
+    void delete() {
+        Product product = Product.builder()
+                .name(Name.newInstance("대출"))
+                .type(ProductType.LOAN)
+                .state(ProductState.ACTIVITY)
+                .build();
+
+        Product deleteProduct = product.delete();
+
+        assertAll(
+                () -> assertThat(deleteProduct.getState()).isEqualTo(ProductState.INACTIVITY.name())
+        );
+    }
 }

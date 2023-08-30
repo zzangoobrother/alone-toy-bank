@@ -63,4 +63,14 @@ public class ProductService {
 
         return ProductServiceResponse.of(product);
     }
+
+    @Transactional
+    public ProductServiceResponse delete(long productId) {
+        Product product = productQueryRepository.getById(productId);
+
+        product = product.delete();
+        product = productCommandRepository.save(product);
+
+        return ProductServiceResponse.of(product);
+    }
 }
