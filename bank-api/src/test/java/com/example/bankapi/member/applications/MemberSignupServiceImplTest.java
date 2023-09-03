@@ -4,6 +4,7 @@ import com.example.bankapi.member.applications.dto.request.SignupServiceRequest;
 import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
 import com.example.bankmember.applications.FakeMemberRepository;
 import com.example.bankmember.applications.port.MemberCommandRepository;
+import com.example.bankmember.domain.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +28,10 @@ class MemberSignupServiceImplTest {
     void signup() {
         SignupServiceRequest request = new SignupServiceRequest("홍길동");
 
-        SignupServiceResponse result = memberSignupService.signup(request);
+        SignupServiceResponse result = memberSignupService.signup(request, Role.ROLE_MEMBER);
 
         assertThat(result.getName()).isEqualTo(request.getName());
+        assertThat(result.getRole()).isEqualTo(Role.ROLE_MEMBER);
     }
 
     @DisplayName("회원명 null 입력하면 에러")
@@ -37,7 +39,7 @@ class MemberSignupServiceImplTest {
     void nullNameInput() {
         SignupServiceRequest request = new SignupServiceRequest(null);
 
-        assertThatThrownBy(() -> memberSignupService.signup(request))
+        assertThatThrownBy(() -> memberSignupService.signup(request, Role.ROLE_MEMBER))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -46,7 +48,7 @@ class MemberSignupServiceImplTest {
     void emptyNameInput() {
         SignupServiceRequest request = new SignupServiceRequest("");
 
-        assertThatThrownBy(() -> memberSignupService.signup(request))
+        assertThatThrownBy(() -> memberSignupService.signup(request, Role.ROLE_MEMBER))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

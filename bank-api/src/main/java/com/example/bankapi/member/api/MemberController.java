@@ -12,6 +12,7 @@ import com.example.bankapi.member.applications.MemberSignupService;
 import com.example.bankapi.member.applications.MemberLoginService;
 import com.example.bankapi.member.applications.dto.response.LoginServiceResponse;
 import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
+import com.example.bankmember.domain.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,14 @@ public class MemberController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/v1/signup")
     public SignupResponse signup(@Valid @RequestBody SignupRequest request) {
-        SignupServiceResponse signupServiceResponse = memberSignupService.signup(request.toServiceRequest());
+        SignupServiceResponse signupServiceResponse = memberSignupService.signup(request.toServiceRequest(), Role.ROLE_MEMBER);
+        return SignupResponse.toResponse(signupServiceResponse);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/api/v1/signup/admin")
+    public SignupResponse adminSignup(@Valid @RequestBody SignupRequest request) {
+        SignupServiceResponse signupServiceResponse = memberSignupService.signup(request.toServiceRequest(), Role.ROLE_ADMIN);
         return SignupResponse.toResponse(signupServiceResponse);
     }
 

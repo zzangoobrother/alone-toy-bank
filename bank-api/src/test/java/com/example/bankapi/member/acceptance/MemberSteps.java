@@ -21,6 +21,17 @@ public class MemberSteps extends AcceptanceTestSteps {
                 .then().log().all().extract();
     }
 
+    public static ExtractableResponse<Response> 관리자_회원_가입_요청(String name) {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", name);
+
+        return given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(params)
+                .when().post("/api/v1/signup/admin")
+                .then().log().all().extract();
+    }
+
     public static String 로그인_되어_있음(String name) {
         ExtractableResponse<Response> response = 로그인_요청(name);
         return response.jsonPath().getString("token");
