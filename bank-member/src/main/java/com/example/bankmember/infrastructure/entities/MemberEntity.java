@@ -4,6 +4,7 @@ import com.example.bankcommon.domain.BaseEntity;
 import com.example.bankcommon.domain.Name;
 import com.example.bankmember.domain.Member;
 import com.example.bankmember.domain.MemberState;
+import com.example.bankmember.domain.Role;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,12 +26,17 @@ public class MemberEntity extends BaseEntity {
     private Name name;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "state")
     private MemberState state;
 
     @Builder
-    public MemberEntity(Name name, MemberState state) {
+    public MemberEntity(Name name, Role role, MemberState state) {
         this.name = name;
+        this.role = role;
         this.state = state;
     }
 
@@ -38,6 +44,7 @@ public class MemberEntity extends BaseEntity {
         return Member.builder()
                 .id(getId())
                 .name(getName())
+                .role(getRole())
                 .state(getState())
                 .createdAt(getCreatedAt())
                 .modifiedAt(getModifiedAt())
@@ -47,6 +54,7 @@ public class MemberEntity extends BaseEntity {
     public static MemberEntity toEntity(Member member) {
         MemberEntity memberEntity = MemberEntity.builder()
                 .name(member.getName())
+                .role(member.getRole())
                 .state(member.getState())
                 .build();
 

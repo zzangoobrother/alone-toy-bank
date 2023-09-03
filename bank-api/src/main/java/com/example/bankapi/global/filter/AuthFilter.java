@@ -40,7 +40,7 @@ public class AuthFilter implements Filter {
     }
 
     private List<String> createExcludeUrlList() {
-        return Arrays.asList("/api/v1/signup", "/api/v1/login");
+        return Arrays.asList("/api/v1/signup", "/api/v1/login", "/api/v1/signup/admin");
     }
 
     @Override

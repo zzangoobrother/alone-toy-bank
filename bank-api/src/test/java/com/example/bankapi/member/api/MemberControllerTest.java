@@ -11,6 +11,7 @@ import com.example.bankapi.member.applications.MemberLoginService;
 import com.example.bankapi.member.applications.dto.response.LoginServiceResponse;
 import com.example.bankapi.member.applications.dto.response.SignupServiceResponse;
 import com.example.bankmember.domain.MemberState;
+import com.example.bankmember.domain.Role;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,13 +59,30 @@ class MemberControllerTest {
         // given
         SignupRequest request = new SignupRequest(NAME);
 
-        when(memberSignupService.signup(any())).thenReturn(SignupServiceResponse.builder().build());
+        when(memberSignupService.signup(any(), any())).thenReturn(SignupServiceResponse.builder().build());
 
         mockMvc.perform(
                 post("/api/v1/signup")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
         )
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    @DisplayName("관리자 회원가입 성공")
+    @Test
+    void adminSignup() throws Exception {
+        // given
+        SignupRequest request = new SignupRequest(NAME);
+
+        when(memberSignupService.signup(any(), any())).thenReturn(SignupServiceResponse.builder().build());
+
+        mockMvc.perform(
+                        post("/api/v1/signup/admin")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
@@ -148,7 +166,7 @@ class MemberControllerTest {
     @DisplayName("로그인 회원 정보 조회")
     @Test
     void getMember() throws Exception {
-        MemberDetails memberDetails = new MemberPrincipal(1L, NAME, MemberState.ACTIVITY);
+        MemberDetails memberDetails = new MemberPrincipal(1L, NAME, MemberState.ACTIVITY, Role.ROLE_MEMBER);
 
         when(authMemberArgument.supportsParameter(any())).thenReturn(true);
         when(authMemberArgument.resolveArgument(any(), any(), any(), any())).thenReturn(memberDetails);

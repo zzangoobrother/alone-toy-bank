@@ -21,6 +21,6 @@ public class MemberDetailsServiceImpl implements MemberDetailsService {
     @Override
     public MemberDetails getMemberDetails(String name) {
         Member member = memberQueryRepository.getMember(name);
-        return new MemberPrincipal(member.getId(), member.getName().getName(), member.getState());
+        return new MemberPrincipal(member.getId(), member.getName().getName(), member.getState(), member.getRole());
     }
 }

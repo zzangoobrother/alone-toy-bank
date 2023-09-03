@@ -50,4 +50,11 @@ public class GlobalExceptionHandler {
         ApiErrorCode errorCode = e.getApiErrorCode();
         return ResponseEntity.status(HttpStatus.valueOf(errorCode.getStatus())).body(ErrorResponse.of(errorCode.getMessage(), errorCode.getStatus(), errorCode.getCode()));
     }
+
+    @ExceptionHandler(NotAuthorizationException.class)
+    protected ResponseEntity<ErrorResponse> handleNotAuthorizationException(NotAuthorizationException e) {
+        log.error("handleBusinessException", e);
+        ApiErrorCode errorCode = e.getApiErrorCode();
+        return ResponseEntity.status(HttpStatus.valueOf(errorCode.getStatus())).body(ErrorResponse.of(errorCode.getMessage(), errorCode.getStatus(), errorCode.getCode()));
+    }
 }
