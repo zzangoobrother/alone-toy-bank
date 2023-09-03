@@ -6,6 +6,7 @@ import com.example.bankcommon.domain.Name;
 import com.example.bankmember.applications.FakeMemberRepository;
 import com.example.bankmember.domain.Member;
 import com.example.bankmember.domain.MemberState;
+import com.example.bankmember.domain.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,10 @@ class MemberLoginServiceTest {
         memberQueryRepository = new FakeMemberRepository();
         memberLoginService = new MemberLoginService(memberQueryRepository);
 
-        Member member = Member.builder().name(Name.newInstance("홍길동")).state(MemberState.ACTIVITY).build();
+        Member member = Member.builder()
+                .name(Name.newInstance("홍길동"))
+                .role(Role.ROLE_MEMBER)
+                .state(MemberState.ACTIVITY).build();
         memberQueryRepository.save(member);
     }
 

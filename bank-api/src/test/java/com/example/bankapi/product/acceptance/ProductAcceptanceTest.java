@@ -24,7 +24,7 @@ public class ProductAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setup() {
-        MemberSteps.회원_가입_요청("홍길동");
+        MemberSteps.관리자_회원_가입_요청("홍길동");
         token = MemberSteps.로그인_되어_있음(NAME);
     }
 
@@ -46,6 +46,25 @@ public class ProductAcceptanceTest extends AcceptanceTest {
 
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @DisplayName("권한이 없는 회원이 상품을 등록하면 안된다.")
+    @Test
+    void notAuthorization() {
+        // given
+        MemberSteps.회원_가입_요청("이순신");
+        token = MemberSteps.로그인_되어_있음("이순신");
+
+        // when
+        ExtractableResponse<Response> response = ProductSteps.상품_등록(LOAN_NAME, ProductType.LOAN, token);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("접급 권한이 없습니다."),
+                () -> assertThat(response.jsonPath().getString("status")).isEqualTo("401"),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("A003")
+        );
     }
 
     @DisplayName("상품을 전체 조회한다.")
